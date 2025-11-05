@@ -80,6 +80,10 @@ class Ninth_Circuit_Tools {
 		require_once NCT_PLUGIN_DIR . 'includes/class-nct-outline-builder.php';
 		require_once NCT_PLUGIN_DIR . 'includes/class-nct-mcp-connector.php';
 		require_once NCT_PLUGIN_DIR . 'includes/class-nct-rest-api.php';
+		require_once NCT_PLUGIN_DIR . 'includes/class-nct-micro-tools.php';
+
+		// Initialize micro-tools
+		NCT_Micro_Tools::init();
 	}
 
 	/**
