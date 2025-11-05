@@ -83,6 +83,7 @@ class Ninth_Circuit_Tools {
 		require_once NCT_PLUGIN_DIR . 'includes/class-nct-micro-tools.php';
 		require_once NCT_PLUGIN_DIR . 'includes/class-nct-uid-registry.php';
 		require_once NCT_PLUGIN_DIR . 'includes/class-nct-evidence-card.php';
+		require_once NCT_PLUGIN_DIR . 'includes/class-nct-scoreboard.php';
 
 		// Initialize micro-tools
 		NCT_Micro_Tools::init();
@@ -333,9 +334,11 @@ function ninth_circuit_tools_activate() {
 	// Load dependencies for table creation
 	require_once NCT_PLUGIN_DIR . 'includes/class-nct-uid-registry.php';
 	require_once NCT_PLUGIN_DIR . 'includes/class-nct-evidence-card.php';
+	require_once NCT_PLUGIN_DIR . 'includes/class-nct-scoreboard.php';
 
-	// Create Evidence Card table
+	// Create tables
 	NCT_Evidence_Card::create_table();
+	NCT_Scoreboard::create_table();
 
 	// Set default options
 	add_option( 'nct_version', NCT_VERSION );
