@@ -51,6 +51,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<button class="nct-tab-btn" data-tab="tools">
 				<span>🔧 Tools</span>
 			</button>
+		<button class="nct-tab-btn" data-tab="hotbar">
+			<span>⚡ Hot Bar</span>
+		</button>
 			<button class="nct-tab-btn" data-tab="evidence">
 				<span>📋 Evidence</span>
 			</button>
@@ -140,6 +143,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</div>
 				</div>
 			</div>
+
+		<!-- Hot Bar Tab -->
+		<div id="nct-tab-hotbar" class="nct-tab-content">
+			<?php include NCT_PLUGIN_DIR . 'templates/template-hotbar-tab.php'; ?>
+		</div>
 
 			<!-- Evidence Tab -->
 			<div id="nct-tab-evidence" class="nct-tab-content">

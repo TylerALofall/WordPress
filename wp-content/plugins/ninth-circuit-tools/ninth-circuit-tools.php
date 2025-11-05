@@ -84,6 +84,7 @@ class Ninth_Circuit_Tools {
 		require_once NCT_PLUGIN_DIR . 'includes/class-nct-uid-registry.php';
 		require_once NCT_PLUGIN_DIR . 'includes/class-nct-evidence-card.php';
 		require_once NCT_PLUGIN_DIR . 'includes/class-nct-scoreboard.php';
+		require_once NCT_PLUGIN_DIR . 'includes/class-nct-template-loader.php';
 
 		// Initialize micro-tools
 		NCT_Micro_Tools::init();
