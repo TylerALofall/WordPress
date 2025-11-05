@@ -81,6 +81,8 @@ class Ninth_Circuit_Tools {
 		require_once NCT_PLUGIN_DIR . 'includes/class-nct-mcp-connector.php';
 		require_once NCT_PLUGIN_DIR . 'includes/class-nct-rest-api.php';
 		require_once NCT_PLUGIN_DIR . 'includes/class-nct-micro-tools.php';
+		require_once NCT_PLUGIN_DIR . 'includes/class-nct-uid-registry.php';
+		require_once NCT_PLUGIN_DIR . 'includes/class-nct-evidence-card.php';
 
 		// Initialize micro-tools
 		NCT_Micro_Tools::init();
@@ -327,6 +329,13 @@ function ninth_circuit_tools_activate() {
 	dbDelta( $sql_evidence );
 	dbDelta( $sql_citations );
 	dbDelta( $sql_outlines );
+
+	// Load dependencies for table creation
+	require_once NCT_PLUGIN_DIR . 'includes/class-nct-uid-registry.php';
+	require_once NCT_PLUGIN_DIR . 'includes/class-nct-evidence-card.php';
+
+	// Create Evidence Card table
+	NCT_Evidence_Card::create_table();
 
 	// Set default options
 	add_option( 'nct_version', NCT_VERSION );

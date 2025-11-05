@@ -143,39 +143,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<!-- Evidence Tab -->
 			<div id="nct-tab-evidence" class="nct-tab-content">
-				<div class="nct-evidence-container">
-					<h3 style="color: var(--nct-text-primary); margin-top: 0; font-size: 18px;">Evidence Collection</h3>
-
-					<p style="color: var(--nct-text-secondary); margin-bottom: 20px; line-height: 1.6;">
-						Collect and organize evidence documents for your 9th Circuit case. All evidence is automatically cataloged and can be referenced in citations.
-					</p>
-
-					<!-- Evidence Form -->
-					<div style="background: rgba(30, 41, 59, 0.4); padding: 20px; border-radius: 12px; border: 1px solid var(--nct-glass-border); margin-bottom: 20px;">
-						<div style="margin-bottom: 16px;">
-							<label style="display: block; color: var(--nct-text-primary); margin-bottom: 8px; font-weight: 500;">Evidence Title</label>
-							<input type="text" id="nct-evidence-title" style="width: 100%; padding: 10px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--nct-glass-border); border-radius: 8px; color: var(--nct-text-primary); font-size: 14px;" placeholder="Enter evidence title..." />
-						</div>
-
-						<div style="margin-bottom: 16px;">
-							<label style="display: block; color: var(--nct-text-primary); margin-bottom: 8px; font-weight: 500;">Description</label>
-							<textarea id="nct-evidence-description" rows="3" style="width: 100%; padding: 10px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--nct-glass-border); border-radius: 8px; color: var(--nct-text-primary); font-size: 14px; resize: vertical;" placeholder="Describe the evidence..."></textarea>
-						</div>
-
-						<div style="margin-bottom: 16px;">
-							<label style="display: block; color: var(--nct-text-primary); margin-bottom: 8px; font-weight: 500;">Tags (comma-separated)</label>
-							<input type="text" id="nct-evidence-tags" style="width: 100%; padding: 10px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--nct-glass-border); border-radius: 8px; color: var(--nct-text-primary); font-size: 14px;" placeholder="e.g., motion, deposition, exhibit" />
-						</div>
-
-						<button id="nct-add-evidence" class="nct-send-btn" style="width: 100%;">Add Evidence</button>
-					</div>
-
-					<!-- Evidence List -->
-					<div id="nct-evidence-list" style="margin-top: 20px;">
-						<h4 style="color: var(--nct-text-primary); margin-bottom: 12px; font-size: 16px;">Recent Evidence</h4>
-						<div style="color: var(--nct-text-secondary); font-style: italic;">No evidence collected yet. Add your first piece above.</div>
-					</div>
-				</div>
+			<?php include NCT_PLUGIN_DIR . 'templates/evidence-card-tab.php'; ?>
 			</div>
 
 			<!-- Citations Tab -->
