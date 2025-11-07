@@ -285,6 +285,9 @@ class NCT_Micro_Tools {
 		require_once NCT_PLUGIN_DIR . 'includes/tools/class-nct-tool-text-clean.php';
 		require_once NCT_PLUGIN_DIR . 'includes/tools/class-nct-tool-word-count.php';
 
+		// Document Analysis Tools
+		require_once NCT_PLUGIN_DIR . 'includes/tools/class-nct-tool-ecf-analyzer.php';
+
 		// Register each tool
 		NCT_Tool_PDF_Merge::register();
 		NCT_Tool_PDF_Split::register();
@@ -293,5 +296,6 @@ class NCT_Micro_Tools {
 		NCT_Tool_Fact_Pool::register();
 		NCT_Tool_Text_Clean::register();
 		NCT_Tool_Word_Count::register();
+		NCT_Tool_ECF_Analyzer::register();
 	}
 }

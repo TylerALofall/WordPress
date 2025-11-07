@@ -489,6 +489,16 @@ class NCT_Evidence_Card {
 				},
 			)
 		);
+
+		register_rest_route(
+			'ninth-circuit-tools/v1',
+			'/evidence-cards/import',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( __CLASS__, 'rest_import_from_python' ),
+				'permission_callback' => '__return_true',
+			)
+		);
 	}
 
 	/**
@@ -636,6 +646,127 @@ class NCT_Evidence_Card {
 				'Content-Disposition' => 'attachment; filename="evidence-cards-' . time() . '.csv"',
 			)
 		);
+	}
+
+	/**
+	 * REST: Import from Python EVI-CARD-TOOL
+	 */
+	public static function rest_import_from_python( $request ) {
+		$python_data = $request->get_json_params();
+
+		if ( empty( $python_data['uid'] ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'error'   => 'Missing UID in Python data',
+				),
+				400
+			);
+		}
+
+		$wordpress_data = self::transform_python_to_wordpress( $python_data );
+		$id             = self::create( $wordpress_data );
+
+		if ( is_wp_error( $id ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'error'   => $id->get_error_message(),
+				),
+				400
+			);
+		}
+
+		$card = self::get( $id );
+		NCT_Template_Loader::register_from_evidence_card( (array) $card );
+
+		$codes = self::get_registered_codes_for_card( $card );
+
+		return new WP_REST_Response(
+			array(
+				'success' => true,
+				'id'      => $id,
+				'message' => 'Evidence card imported and registered to Hot Bar',
+				'codes'   => $codes,
+			),
+			201
+		);
+	}
+
+	/**
+	 * Transform Python schema to WordPress schema
+	 */
+	private static function transform_python_to_wordpress( $python_data ) {
+		$defendant_ids = array();
+		if ( isset( $python_data['parties_involved'][0] ) ) {
+			foreach ( $python_data['parties_involved'][0] as $key => $value ) {
+				if ( $value === true && preg_match( '/^d(\d)_/', $key, $matches ) ) {
+					$defendant_ids[] = (int) $matches[1];
+				}
+			}
+		}
+
+		$claim_text = '';
+		if ( isset( $python_data['claim'][0] ) ) {
+			$clause  = $python_data['claim'][0]['clause'] ?? '';
+			$element = $python_data['claim'][0]['element'] ?? '';
+			$claim_text = trim( $clause . ' - ' . $element );
+		}
+
+		$case_law = array();
+		if ( isset( $python_data['precedence'][0] ) ) {
+			$case_law = array_filter( $python_data['precedence'][0] );
+		}
+
+		$page_number = null;
+		if ( ! empty( $python_data['citation'] ) ) {
+			preg_match( '/(\d+)/', $python_data['citation'], $page_match );
+			$page_number = isset( $page_match[1] ) ? (int) $page_match[1] : null;
+		}
+
+		$evidence_date = '1970-01-01';
+		if ( isset( $python_data['location'][0]['date_of_event'] ) ) {
+			$evidence_date = $python_data['location'][0]['date_of_event'];
+		}
+
+		return array(
+			'uids'                       => array( $python_data['uid'] ),
+			'causeOfActionIds'           => array(),
+			'defendantIds'               => $defendant_ids,
+			'claim'                      => $claim_text,
+			'date'                       => $evidence_date,
+			'description'                => $python_data['description_of_evidence'] ?? '',
+			'source'                     => $python_data['source'] ?? '',
+			'significance'               => $python_data['significance'] ?? '',
+			'depiction'                  => $python_data['screenshot_url'] ?? '',
+			'originalText'               => $python_data['depiction_quote'] ?? '',
+			'pageNumber'                 => $page_number,
+			'sourceFileName'             => $python_data['source'] ?? '',
+			'caseLaw'                    => $case_law,
+			'declarationOfAuthenticity'  => $python_data['oath_of_auth'] ?? '',
+			'notes'                      => $python_data['notes'] ?? '',
+			'uidDetails'                 => array(
+				array(
+					'uid'          => $python_data['uid'],
+					'significance' => $python_data['significance'] ?? '',
+					'caseLaw'      => implode( '; ', $case_law ),
+				),
+			),
+			'rawAiResponse'              => $python_data,
+		);
+	}
+
+	/**
+	 * Get registered Hot Bar codes for a card
+	 */
+	private static function get_registered_codes_for_card( $card ) {
+		$codes = array();
+		foreach ( $card->uids as $uid ) {
+			$codes[] = $uid . '-E1';
+			$codes[] = $uid . '-CL1';
+			$codes[] = $uid . '-P';
+		}
+		return $codes;
 	}
 }
 
